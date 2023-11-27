@@ -56,16 +56,18 @@ namespace DuongThiHang_211211501.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("MaHang,MaLoai,TenHang,Gia,Anh")] HangHoa hangHoa)
+        public async Task<IActionResult> Create(HangHoa hangHoa)
         {
-            if (ModelState.IsValid)
+            /*if (ModelState.IsValid)
             {
                 _context.Add(hangHoa);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
-            }
+            }*/
+            _context.Add(hangHoa);
+            await _context.SaveChangesAsync();
             ViewData["MaLoai"] = new SelectList(_context.LoaiHangs, "MaLoai", "TenLoai", hangHoa.MaLoai);
-            return View();
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: HangHoas/Edit/5
@@ -162,6 +164,12 @@ namespace DuongThiHang_211211501.Controllers
         private bool HangHoaExists(int id)
         {
           return (_context.HangHoas?.Any(e => e.MaHang == id)).GetValueOrDefault();
+        }
+        [HttpGet]
+        public IActionResult LoaiHangByID(int lid)
+        {
+            var loaiHang = _context.HangHoas.Where(x => x.MaLoai == lid).ToList();
+            return PartialView("ListLoaiHang", loaiHang);
         }
     }
 }

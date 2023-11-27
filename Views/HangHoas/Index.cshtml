@@ -18,23 +18,25 @@
 			</div>
 			<div class="clear"></div>
 		</div>
-		<div class="section group">
-			@foreach(var item in Model)
-			{
-				<div class="grid_1_of_4 images_1_of_4">
-					<a href="#"><img src="~/images/@item.Anh" alt="" /></a>
-					<h2>@item.TenHang</h2>
-					<div class="price-details">
-						<div class="price-number">
-							<p><span class="rupees">$@item.Gia</span></p>
+		<div id="content">
+			<div class="section group">
+				@foreach (var item in Model)
+				{
+					<div class="grid_1_of_4 images_1_of_4">
+						<a href="#"><img src="~/images/@item.Anh" alt="" /></a>
+						<h2>@item.TenHang</h2>
+						<div class="price-details">
+							<div class="price-number">
+								<p><span class="rupees">$@item.Gia</span></p>
+							</div>
+							<div class="add-cart">
+								<h4><a href="#">Add to Cart</a></h4>
+							</div>
+							<div class="clear"></div>
 						</div>
-						<div class="add-cart">
-							<h4><a href="#">Add to Cart</a></h4>
-						</div>
-						<div class="clear"></div>
 					</div>
-				</div>
-			}
+				}
+			</div>
 		</div>
 		<!-- End New Product -->
 		<!-- Begin Feature Products -->
@@ -68,3 +70,17 @@
 		<!-- End Feature Products -->
 	</div>
 </div>
+@section Filter{
+	<script>
+		$("li").click(function (e) {
+			var id = $(this).attr("id");
+			$.ajax({
+				url: "HangHoas/LoaiHangByID", //{controller}/{action}
+				data: { lid: id },
+				success: function (response) {
+					$("div#content").html(response);
+				}
+			});
+		});
+	</script>
+}
